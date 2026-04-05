@@ -1,0 +1,26 @@
+name: financial-audit-sampling
+version: "1.0.0"
+description: >
+  An AI agent acts as a financial auditor, intelligently sampling transactions
+  from a seeded ledger to maximize fraud detection under budget constraints.
+  Models real audit sampling workflows used by professional accountants.
+author: "your-name-here"
+tags:
+  - openenv
+  - finance
+  - audit
+  - fraud-detection
+  - sampling
+tasks:
+  - id: rule_based_audit
+    name: "Rule-Based Anomaly Detection"
+    difficulty: easy
+  - id: statistical_audit
+    name: "Statistical Anomaly Detection"
+    difficulty: medium
+  - id: structuring_audit
+    name: "Pattern-Based Fraud (Structuring)"
+    difficulty: hard
+observation_space: AuditObservation
+action_space: AuditAction
+reward_range: [-1.0, 1.0]
