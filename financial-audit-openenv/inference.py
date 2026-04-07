@@ -1,11 +1,27 @@
 import os
 import json
 import sys
+from pathlib import Path
 from openai import OpenAI
 
-API_KEY = os.getenv("HF_TOKEN") or os.getenv("OPENAI_API_KEY")
-BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+# Load .env file if present (local development only)
+env_path = Path(__file__).parent / ".env"
+if env_path.exists():
+    with open(env_path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, _, value = line.partition("=")
+                os.environ.setdefault(key.strip(), value.strip())
+
+# Exactly as required by submission checklist
+API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
+HF_TOKEN = os.getenv("HF_TOKEN")
+
+# Fallback for local testing via aipipe or openai
+API_KEY = HF_TOKEN or os.getenv("OPENAI_API_KEY")
+
 ENV_URL = os.getenv("ENV_URL", "http://localhost:7860")
 
 TASKS = ["rule_based_audit", "statistical_audit", "structuring_audit"]
@@ -140,10 +156,10 @@ def run_task(client: OpenAI, task: str) -> float:
 
 def main():
     if not API_KEY:
-        print("ERROR: Set HF_TOKEN or OPENAI_API_KEY environment variable", file=sys.stderr)
+        print("ERROR: Set HF_TOKEN environment variable", file=sys.stderr)
         sys.exit(1)
 
-    client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+    client = OpenAI(api_key=API_KEY, base_url=API_BASE_URL)
     all_scores = {}
 
     for task in TASKS:
