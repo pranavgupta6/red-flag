@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "api.server:app"
+server = "server.app:main"
 
 [project.urls]
 Homepage = "https://huggingface.co/spaces/pranavgupta6/red-flag"
