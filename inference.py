@@ -3,6 +3,8 @@ import json
 import sys
 from pathlib import Path
 from openai import OpenAI
+import urllib.request
+import urllib.error
 
 # Load .env file if present (local development only)
 env_path = Path(__file__).parent / ".env"
@@ -22,7 +24,22 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 # Fallback for local testing via aipipe or openai
 API_KEY = HF_TOKEN or os.getenv("OPENAI_API_KEY")
 
-ENV_URL = os.getenv("ENV_URL", "http://localhost:7860")
+HF_SPACE_URL = "https://pranavgupta6-red-flag.hf.space"
+
+def resolve_env_url():
+    local_url = os.getenv("ENV_URL", "http://localhost:7860")
+    try:
+        req = urllib.request.Request(f"{local_url}/tasks", method="GET")
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            if resp.status == 200:
+                print(f"[INFO]  Using local environment: {local_url}")
+                return local_url
+    except Exception:
+        pass
+    print(f"[INFO]  Local server not reachable, falling back to HF Space: {HF_SPACE_URL}")
+    return HF_SPACE_URL
+
+ENV_URL = resolve_env_url()
 
 TASKS = ["rule_based_audit", "statistical_audit", "structuring_audit"]
 
@@ -43,9 +60,6 @@ Respond ONLY with a JSON object, no markdown, no explanation outside the JSON:
 
 
 def run_task(client: OpenAI, task: str) -> float:
-    import urllib.request
-    import urllib.error
-
     score = 0.0
     rewards = []
     step = 0
