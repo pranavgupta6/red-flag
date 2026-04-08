@@ -2,7 +2,7 @@
 title: Red Flag
 emoji: 🚩
 colorFrom: red
-colorTo: orange
+colorTo: red
 sdk: docker
 pinned: false
 tags:
