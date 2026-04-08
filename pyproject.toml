@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "red-flag"
+version = "1.0.0"
+description = "OpenEnv-compliant financial audit sampling environment for AI agents"
+authors = [
+    { name = "Pranav Gupta" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "pydantic>=2.0.0",
+    "openai>=1.0.0",
+    "numpy>=1.24.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://huggingface.co/spaces/pranavgupta6/red-flag"
+Repository = "https://github.com/pranavgupta6/red-flag"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["env*", "api*", "tasks*"]
+
+[tool.openenv]
+sdk = "docker"
+tasks = ["rule_based_audit", "statistical_audit", "structuring_audit"]
