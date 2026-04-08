@@ -1,3 +1,15 @@
+---
+title: Red Flag
+emoji: 🚩
+colorFrom: red
+colorTo: orange
+sdk: docker
+pinned: false
+tags:
+  - openenv
+---
+
+
 # Financial Audit Sampling Environment
 
 An OpenEnv-compliant AI environment where an agent acts as a financial auditor,
